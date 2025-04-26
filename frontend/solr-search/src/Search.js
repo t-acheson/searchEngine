@@ -8,7 +8,8 @@ const Search = () => {
     const handleSearch = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`/solr/testcore/select?q=name:${query}&wt=json`);
+            const response = await fetch(`/solr/testcore/select?q=name:${encodeURIComponent('*' + query + '*')} OR address:${encodeURIComponent('*' + query + '*')}&wt=json`);
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -18,7 +19,6 @@ const Search = () => {
             setError(error.toString());
         }
     };
-
     return (
         <div>
             <form onSubmit={handleSearch}>
