@@ -21,13 +21,11 @@ def process_log_line(line):
     """
     parts = line.strip().split('|')
     
-    # Make sure the line has the expected number of parts
     if len(parts) != 6:
         print(f"Skipping invalid line: {line}")
         return None
     
     id, name, address, created_at, latitude, longitude = parts
-    # Convert created_at to datetime format
     try:
         created_at = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S')
 
@@ -49,12 +47,10 @@ def process_log_line(line):
 # Function to process the entire file and index the data into Solr
 def process_log_file(log_file='fakedata.txt'):
     with open(log_file, 'r') as file:
-        # Read and process each line from the file
         for line in file:
             result = process_log_line(line)
             if result:
                 try:
-                    # Index the result into Solr
                     solr.add([result])
                     print(f"Indexed data for {result['name']} into Solr.")
                 except Exception as e:
